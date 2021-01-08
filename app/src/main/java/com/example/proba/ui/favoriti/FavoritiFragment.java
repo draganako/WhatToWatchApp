@@ -11,16 +11,25 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.proba.R;
+import com.example.proba.adapters.TitleAdapter;
+import com.example.proba.datamodels.Title;
+
+import java.util.ArrayList;
 
 public class FavoritiFragment extends Fragment {
 
     private FavoritiViewModel favoritiViewModel;
+    private RecyclerView recyclerView;//
+    private ArrayList<Title> popularTitles;//
+    private TitleAdapter adapter;//
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        favoritiViewModel =
+       /* favoritiViewModel =
                 new ViewModelProvider(this).get(FavoritiViewModel.class);
         View root = inflater.inflate(R.layout.fragment_favoriti, container, false);
         final TextView textView = root.findViewById(R.id.text_favoriti);
@@ -30,6 +39,18 @@ public class FavoritiFragment extends Fragment {
                 textView.setText(s);
             }
         });
-        return root;
+        return root;*/
+        View view = inflater.inflate(R.layout.fragment_favoriti, container, false);
+        recyclerView = (RecyclerView) view.findViewById(R.id.rv_favorite_titles);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
+        popularTitles=new ArrayList<>();
+        popularTitles.add(new Title());
+        popularTitles.add(new Title());
+
+        adapter=new TitleAdapter(popularTitles,view.getContext());
+        recyclerView.setAdapter(adapter);
+        return view;
     }
 }
