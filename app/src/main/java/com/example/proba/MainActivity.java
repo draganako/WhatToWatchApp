@@ -1,23 +1,34 @@
 package com.example.proba;
 
+import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.proba.adapters.TitleAdapter;
 import com.example.proba.datamodels.Title;
+import com.example.proba.datamodels.User;
+import com.example.proba.datamodels.UserData;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -40,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private boolean isChecked = false;
     private Button sortButton;
+    private String username;
+    private SharedPreferences sharedPref;
+    private FirebaseAuth mfirebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +84,55 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        View header = navigationView.getHeaderView(0);
+        ImageView pp = (ImageView) header.findViewById(R.id.imageViewProfilePic);
+        TextView usnTv = (TextView) header.findViewById(R.id.textViewProfileName);
+
+        pp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ChangeProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        sharedPref = getApplicationContext().getSharedPreferences( "Userdata", Context.MODE_PRIVATE);
+        username = sharedPref.getString(getString(R.string.loggedUser_username), "EMPTY");
+        User user = UserData.getInstance().getUserByUsername(username);
+        usnTv.setText(username);
+        mfirebaseAuth=FirebaseAuth.getInstance();
+        final FirebaseUser firebaseUser = mfirebaseAuth.getCurrentUser();
+
+        navigationView.getMenu().getItem(3).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if(firebaseUser != null)
+                {
+                    sharedPref = getApplicationContext().getSharedPreferences( "Userdata", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+
+                    editor.remove(getString(R.string.loggedUser_username));
+                    editor.remove(getString(R.string.loggedUser_email));
+                    editor.remove("userImage");
+                    editor.remove(getString(R.string.loggedUser_index));
+                    editor.commit();
+
+                    mfirebaseAuth.signOut();
+
+                    Toast.makeText(getApplicationContext(), "Logged out", Toast.LENGTH_SHORT).show();
+
+                    Intent intent=new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(), "Could not log out!", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            }
+        });
+
         sortButton=(Button) findViewById(R.id.extended_fab);
         sortButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,9 +159,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }); //closing the setOnClickListener method
 
-        //probaaaaaaa
-        //Intent intent = new Intent(this, CommentsActivity.class);
-        //startActivity(intent);
     }
 
     @Override
@@ -123,6 +183,5 @@ public class MainActivity extends AppCompatActivity {
         else
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
     }
-
 
 }

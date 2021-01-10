@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">proba</string>
+    <string name="app_name">What To Watch</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -23,4 +23,8 @@
     -->
     <string name="hello_world">Hello Square World!</string>
     <string name="title_activity_signup">SignupActivity</string>
+    <string name="loggedUser_email">userEmail</string>
+    <string name="loggedUser_username">userName</string>
+    <string name="loggedUser_image">userImage</string>
+    <string name="loggedUser_index">userIndex</string>
 </resources>

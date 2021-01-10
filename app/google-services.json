@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "176676984684",
+    "firebase_url": "https://whattowatch-c30e0-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "whattowatch-c30e0",
+    "storage_bucket": "whattowatch-c30e0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:176676984684:android:77836d4b1371e4833d8549",
+        "android_client_info": {
+          "package_name": "com.example.proba"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "176676984684-dkqse8u6ibcsq53alaeinevl8vbtdr47.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8YA_8kK-1UMky4m3SOZ75hI_X94wMEW8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "176676984684-dkqse8u6ibcsq53alaeinevl8vbtdr47.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
