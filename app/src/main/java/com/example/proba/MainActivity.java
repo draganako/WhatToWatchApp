@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.SearchEvent;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
@@ -15,14 +16,18 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.proba.adapters.TitleAdapter;
 import com.example.proba.datamodels.Title;
+import com.example.proba.datamodels.TitleData;
 import com.example.proba.datamodels.User;
 import com.example.proba.datamodels.UserData;
+import com.example.proba.ui.home.HomeFragment;
+import com.example.proba.ui.home.PopularTitlesFragment;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -34,6 +39,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -54,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
     private String username;
     private SharedPreferences sharedPref;
     private FirebaseAuth mfirebaseAuth;
+    private SearchView searchView;
+    private TitleAdapter ura;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_main);
+        fillDatabase();//////////////////////////////////////////////////////
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -146,12 +155,20 @@ public class MainActivity extends AppCompatActivity {
                 //registering popup with OnMenuItemClickListener
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        Toast.makeText(
-                                MainActivity.this,
-                                "You Clicked : " + item.getTitle(),
-                                Toast.LENGTH_SHORT
-                        ).show();
-                        return true;
+                        switch (item.getItemId()) {
+                            case R.id.none:
+                                ura = HomeFragment.popularTitlesFragment.adapter;
+                                ura.filterTitles(searchView.getQuery(),0);
+                                return true;
+                            case R.id.movies:
+                                ura = HomeFragment.popularTitlesFragment.adapter;
+                                ura.filterTitles(searchView.getQuery(),1);
+                                return true;
+                            default://series
+                                ura = HomeFragment.popularTitlesFragment.adapter;
+                                ura.filterTitles(searchView.getQuery(),2);
+                                return true;
+                        }
                     }
                 });
 
@@ -159,6 +176,28 @@ public class MainActivity extends AppCompatActivity {
             }
         }); //closing the setOnClickListener method
 
+        searchView=findViewById(R.id.search_titles);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+        {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText)
+            {
+                if (newText!=null)
+                {
+                    ura = HomeFragment.popularTitlesFragment.adapter;
+                    ura.filterTitles(newText,0);
+                }
+                return false;
+
+            }
+
+
+        });
     }
 
     @Override
@@ -184,4 +223,18 @@ public class MainActivity extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
     }
 
+    private void fillDatabase()
+    {
+       Title newTitle = new Title();
+       newTitle.name = "NOVIII";
+       newTitle.synopsis = "objectType";
+       newTitle.image = "";
+       newTitle.year=1997;
+
+       TitleData.getInstance().AddTitle(newTitle);
+
+       newTitle=new Title("");
+       TitleData.getInstance().AddTitle(newTitle);
+
+    }
 }

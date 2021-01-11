@@ -25,7 +25,7 @@ import java.util.List;
 public class PopularTitlesFragment extends Fragment {
     View view;
     RecyclerView recyclerView;//
-    private RecyclerView.Adapter adapter;//
+    public TitleAdapter adapter;//
     private List<Title> popularTitles;//
 
     // TODO: Rename parameter arguments, choose names that match
@@ -80,7 +80,7 @@ public class PopularTitlesFragment extends Fragment {
 
         popularTitles=new ArrayList<>();
         popularTitles.add(new Title());
-        popularTitles.add(new Title());
+        popularTitles.add(new Title(""));
 
         adapter=new TitleAdapter(popularTitles,view.getContext());
         recyclerView.setAdapter(adapter);
