@@ -158,14 +158,6 @@ public class CommentData {
 
     }
 
-    public void deleteComment(int index) {
-
-        db.child(FIREBASE_CHILD).child(comments.get(index).key).removeValue();
-        comments.remove(index);
-        recreateKeyIndexMapping();
-    }
-
-
     private void recreateKeyIndexMapping()
     {
         commentsMapping.clear();

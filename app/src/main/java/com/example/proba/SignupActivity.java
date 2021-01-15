@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -49,7 +50,14 @@ public class SignupActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
+        switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
+            case Configuration.UI_MODE_NIGHT_YES:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                break;
+            case Configuration.UI_MODE_NIGHT_NO:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                break;
+        }
         setContentView(R.layout.activity_signup);
 
         userData.getInstance().getUsers();
@@ -125,11 +133,11 @@ public class SignupActivity extends AppCompatActivity
                     u.picture = "";
 
                     userData.getInstance().AddUser(u);
-
+                    Toast.makeText(getApplicationContext(), "Successfully registered ", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
-                    Toast.makeText(getApplicationContext(), "Could not register! ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Could not register", Toast.LENGTH_SHORT).show();
                 }
 
             }

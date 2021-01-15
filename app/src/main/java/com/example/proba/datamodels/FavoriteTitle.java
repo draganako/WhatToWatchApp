@@ -14,9 +14,15 @@ public class FavoriteTitle {
         userFavTitle=new Title("");
     }
 
-    public FavoriteTitle(String s)
+    public FavoriteTitle(String email)
     {
-        email="proba@gmail.com";
+        this.email=email;
         userFavTitle=new Title();
+    }
+
+    public FavoriteTitle(String email,Title title)
+    {
+        this.email=email;
+        userFavTitle=title;
     }
 }

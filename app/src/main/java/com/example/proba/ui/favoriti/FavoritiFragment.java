@@ -29,31 +29,21 @@ import java.util.ResourceBundle;
 public class FavoritiFragment extends Fragment {
 
     private FavoritiViewModel favoritiViewModel;
-    private RecyclerView recyclerView;//
-    private TitleAdapter adapter;//
+    private RecyclerView recyclerView;
+    private TitleAdapter adapter;
     private ArrayList<Title> titleListFavs;
     private SharedPreferences sharedPref;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-       /* favoritiViewModel =
-                new ViewModelProvider(this).get(FavoritiViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_favoriti, container, false);
-        final TextView textView = root.findViewById(R.id.text_favoriti);
-        favoritiViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;*/
+
         View view = inflater.inflate(R.layout.fragment_favoriti, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.rv_favorite_titles);
         recyclerView.setHasFixedSize(true);
 
         sharedPref = getActivity().getSharedPreferences( "Userdata", Context.MODE_PRIVATE);
         String email = sharedPref.getString(getString(R.string.loggedUser_email), "EMPTY");
-        FavoriteTitleData.getInstance().AddFavoriteTitle(new FavoriteTitle(""));
+        FavoriteTitleData.getInstance().AddFavoriteTitle(new FavoriteTitle("proba@gmail.com"));
         //FavoriteTitleData.getInstance().AddFavoriteTitle(new FavoriteTitle());
         titleListFavs=FavoriteTitleData.getInstance().GetUserFavorites(email);
         adapter=new TitleAdapter(titleListFavs,view.getContext());

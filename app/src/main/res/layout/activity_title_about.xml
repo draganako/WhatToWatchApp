@@ -6,15 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".TitleAboutActivity">
 
+    <Button
+        android:id="@+id/buttonAddToFavs"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="Add to ★"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="40dp"
+        android:layout_alignParentRight="true"
+        />
+
     <ImageView
         android:id="@+id/imageViewTitleImage"
         android:layout_width="170dp"
         android:layout_height="170dp"
         app:srcCompat="@drawable/ikonica1"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="60dp"
         tools:layout_editor_absoluteX="169dp"
         tools:layout_editor_absoluteY="154dp"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/buttonAddToFavs"/>
 
     <TextView
         android:id="@+id/textViewTitleNameAndYear"

@@ -8,10 +8,10 @@
 
     <ImageView
         android:id="@+id/logoImageViewSup"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         app:srcCompat="@mipmap/ic_launcher"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="70dp"
         android:layout_centerHorizontal="true"
         />
 
@@ -19,7 +19,7 @@
         android:id="@+id/emailSignup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:layout_marginHorizontal="50dp"
         android:layout_below="@id/logoImageViewSup">
         <com.google.android.material.textfield.TextInputEditText
@@ -32,8 +32,8 @@
         android:id="@+id/usernameSignup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="50dp"
         android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="30dp"
         android:layout_below="@id/emailSignup"
         >
         <com.google.android.material.textfield.TextInputEditText
@@ -47,11 +47,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="50dp"
-        android:layout_below="@id/usernameSignup">
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/usernameSignup"
+        app:passwordToggleEnabled="true">
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="password" />
+            android:hint="password"
+            android:inputType="textPassword"/>
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -60,13 +63,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginVertical="50dp"
+        android:layout_marginTop="30dp"
         android:layout_below="@id/passSignup"
         android:text="Done" />
 
     <TextView
         android:id="@+id/orLoginText"
         android:text="@string/or_login"
+        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/doneSignupButton"

@@ -58,7 +58,6 @@ public class FavoriteTitleData
     public interface ReadyEventListener {
         void onReady();
     }
-//////////////////////////
 
     ValueEventListener parentEventListener = new ValueEventListener() {
         @Override

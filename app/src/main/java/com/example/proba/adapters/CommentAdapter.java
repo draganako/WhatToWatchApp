@@ -50,13 +50,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         } else {
             holder.authorImage.setImageResource(R.drawable.ic_user_24);
         }
-        holder.authorImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Intent intent = new Intent(this, ProfileActivity.class);
-                //startActivity(intent);
-            }
-        });
+
     }
 
     @Override

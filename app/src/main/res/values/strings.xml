@@ -11,7 +11,7 @@
     <string name="or_signup">or Sign up</string>
 
     <string name="menu_home">Home</string>
-    <string name="menu_favoriti">Favoriti</string>
+    <string name="menu_favorites">Favorites</string>
     <string name="menu_darkmode">Dark mode</string>
     <string name="menu_logout">Log out</string>
     <!-- TODO: Remove or change this placeholder text -->

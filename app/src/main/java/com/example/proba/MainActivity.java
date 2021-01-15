@@ -5,6 +5,7 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -81,20 +82,18 @@ public class MainActivity extends AppCompatActivity {
     private TextView usnTv;
     private ImageView pp;
 
-    /*FirebaseStorage storage;
-    private StorageReference storageReference;
-    String firestorageUri = null;*/
-
-    // private List<Title> titleList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
-            setTheme(R.style.AppThemeDark);
-        else
-            setTheme(R.style.AppThemeLight);*/
+        switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
+            case Configuration.UI_MODE_NIGHT_YES:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                break;
+            case Configuration.UI_MODE_NIGHT_NO:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                break;
+        }
         setContentView(R.layout.activity_main);
 
 
@@ -172,11 +171,15 @@ public class MainActivity extends AppCompatActivity {
         {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if(item.getTitle().toString().compareTo("Dark mode")==0)
-                    item.setTitle("Light mode");
-                else
-                    item.setTitle("Light mode");
-                //changeMode();
+
+                switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
+                    case Configuration.UI_MODE_NIGHT_YES:
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                        break;
+                    case Configuration.UI_MODE_NIGHT_NO:
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                        break;
+                }
                 return true;
             }
         });

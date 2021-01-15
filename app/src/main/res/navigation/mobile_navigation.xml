@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
+    android:label="@string/menu_favorites"
     app:startDestination="@+id/nav_home">
 
     <fragment
@@ -14,7 +15,7 @@
     <fragment
         android:id="@+id/nav_favoriti"
         android:name="com.example.proba.ui.favoriti.FavoritiFragment"
-        android:label="@string/menu_favoriti"
+        android:label="@string/menu_favorites"
         tools:layout="@layout/fragment_favoriti" />
 
 
