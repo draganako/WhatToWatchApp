@@ -13,10 +13,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.proba.CommentsActivity;
 import com.example.proba.R;
 import com.example.proba.datamodels.Comment;
 import com.example.proba.datamodels.Title;
+import com.example.proba.datamodels.User;
+import com.example.proba.datamodels.UserData;
 
 import java.util.List;
 
@@ -41,7 +44,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     public void onBindViewHolder(CommentAdapter.ViewHolder holder, int position) {
         Comment comm=commentList.get(position);
         holder.commentText.setText(comm.author+": "+comm.text);
-        //holder.authorImage...(title.image);
+        User user=UserData.getInstance().getUserByUsername(comm.author);
+        if (user.picture != null && !user.picture.equals("")) {
+            Glide.with(context).load(user.picture).into(holder.authorImage);
+        } else {
+            holder.authorImage.setImageResource(R.drawable.ic_user_24);
+        }
         holder.authorImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -142,11 +142,11 @@ public class TitleData {
         return titles.get(index);
     }
 
-   /* public Title getTitle(String username) {
+    public Title getTitle(String name) {
         Title uu = null;
         for(int i =0; i< this.titles.size(); i++)
         {
-            if(this.titles.get(i).useer.compareTo(username) ==0)
+            if(this.titles.get(i).name.compareTo(name) ==0)
             {
                 uu = this.titles.get(i);
             }
@@ -154,8 +154,7 @@ public class TitleData {
 
         return uu;
 
-
-    }*/
+    }
 
     public void deleteTitle(int index) {
 
@@ -170,13 +169,30 @@ public class TitleData {
         uu.image=u.image;
         uu.name=u.name;
         uu.synopsis=u.synopsis;
+        uu.actors=u.actors;
         uu.year=u.year;
+        uu.isAMovie=u.isAMovie;
 
         db.child(FIREBASE_CHILD).child(uu.key).setValue(uu);
 
     }
 
+    public void updateTitle(String name, String imageUrl)
+    {
+        Title uu = null;
+        for(int i =0; i< this.titles.size(); i++)
+        {
+            if(this.titles.get(i).name.compareTo(name) ==0)
+            {
+                uu = this.titles.get(i);
+            }
+        }
 
+        uu.image=imageUrl;
+
+        db.child(FIREBASE_CHILD).child(uu.key).setValue(uu);
+
+    }
 
     private void recreateKeyIndexMapping()
     {

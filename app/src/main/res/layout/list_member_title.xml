@@ -21,7 +21,7 @@
             android:id="@+id/titleViewName"
             android:layout_height="wrap_content"
             android:layout_width="160dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="22dp"
             android:layout_centerVertical="true"
             android:textSize="22dp"
             android:layout_toRightOf="@id/imageViewTitlePhoto"
@@ -29,7 +29,7 @@
             android:layout_marginRight="0dp"/>
 
         <Button
-            android:id="@+id/buttonView"
+            android:id="@+id/buttonViewViewTitle"
             android:layout_height="42dp"
             android:layout_width="50dp"
             android:layout_alignParentRight="true"

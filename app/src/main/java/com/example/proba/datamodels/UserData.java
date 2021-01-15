@@ -193,43 +193,6 @@ public class    UserData
         return u;
     }
 
-  /*  public ArrayList<User> getSearchedUsers(String usernameToSearch, int search_radius, String loggedUsername) {
-
-        ArrayList<User> retList = new ArrayList<>();
-        User loggedUser = getUserByUsername(loggedUsername);
-
-       // ArrayList<User> friendsUsers = FriendshipData.getInstance().GetUserFriends(loggedUser.email);
-        //ArrayList<User> closeUsers = new ArrayList<>();
-
-
-        for (int i = 0; i < friendsUsers.size(); i++) {
-
-            User friendUser = getUserByUsername(friendsUsers.get(i).username);
-
-            Position currentUserPosition = loggedUser.UserPosition;
-            double current_lat = Double.parseDouble(currentUserPosition.latitude);
-            double current_lon = Double.parseDouble(currentUserPosition.longitude);
-
-            Position friendUserPosition = friendUser.UserPosition;
-            double friend_lat = Double.parseDouble(friendUserPosition.latitude);
-            double friend_lon = Double.parseDouble(friendUserPosition.longitude);
-
-            float dist[] = new float[1];
-            Location.distanceBetween(current_lat, current_lon, friend_lat, friend_lon, dist);
-
-            if (dist[0] <= search_radius) {
-                closeUsers.add(friendUser);
-            }
-        }
-
-        for (int i = 0; i < closeUsers.size(); i++) {
-            if (closeUsers.get(i).username.toLowerCase().contains(usernameToSearch.toLowerCase().subSequence(0, usernameToSearch.length())))
-                retList.add(closeUsers.get(i));
-        }
-
-        return retList;
-    }*/
-
 
 
     public void deleteUser(int index) {
@@ -251,13 +214,12 @@ public class    UserData
 
     }
 
-
-    public void updateUserProfile(String username, String newImage)
+    public void updateUserProfile(String email, String username, String newImage)
     {
         int indexx = -1;
         for(int i =0; i < users.size(); i++)
         {
-            if(users.get(i).username.compareTo(username) == 0) {
+            if(users.get(i).email.compareTo(email) == 0) {
                 indexx = i;
                 break;
             }
@@ -266,7 +228,7 @@ public class    UserData
             return;
 
         User uu =users.get(indexx);
-       // uu.pa = newBio;
+        uu.username = username;
         uu.picture = newImage;
 
         db.child(FIREBASE_CHILD).child(uu.key).setValue(uu);

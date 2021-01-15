@@ -1,9 +1,12 @@
 package com.example.proba;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -21,20 +24,32 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.proba.adapters.TitleAdapter;
 import com.example.proba.datamodels.Title;
 import com.example.proba.datamodels.TitleData;
 import com.example.proba.datamodels.User;
 import com.example.proba.datamodels.UserData;
+import com.example.proba.ui.favoriti.FavoritiFragment;
 import com.example.proba.ui.home.HomeFragment;
 import com.example.proba.ui.home.PopularTitlesFragment;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.common.net.InternetDomainName;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.navigation.NavController;
@@ -50,6 +65,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -62,25 +78,29 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mfirebaseAuth;
     private SearchView searchView;
     private TitleAdapter ura;
+    private TextView usnTv;
+    private ImageView pp;
+
+    /*FirebaseStorage storage;
+    private StorageReference storageReference;
+    String firestorageUri = null;*/
+
+    // private List<Title> titleList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        /*if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
+            setTheme(R.style.AppThemeDark);
+        else
+            setTheme(R.style.AppThemeLight);*/
         setContentView(R.layout.activity_main);
-        fillDatabase();//////////////////////////////////////////////////////
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ExtendedFloatingActionButton fab = findViewById(R.id.extended_fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -94,14 +114,16 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         View header = navigationView.getHeaderView(0);
-        ImageView pp = (ImageView) header.findViewById(R.id.imageViewProfilePic);
-        TextView usnTv = (TextView) header.findViewById(R.id.textViewProfileName);
-
-        pp.setOnClickListener(new View.OnClickListener() {
+        usnTv = (TextView) header.findViewById(R.id.textViewProfileName);
+        ImageView imageViewEdit = (ImageView)header.findViewById(R.id.imageViewEdit);
+        imageViewEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(getApplicationContext(), ChangeProfileActivity.class);
-                startActivity(intent);
+                intent.putExtra("username", username);
+                intent.putExtra("picture", sharedPref.getString(getString(R.string.loggedUser_image), "EMPTY"));
+                startActivityForResult(intent,1234);
             }
         });
 
@@ -109,9 +131,12 @@ public class MainActivity extends AppCompatActivity {
         username = sharedPref.getString(getString(R.string.loggedUser_username), "EMPTY");
         User user = UserData.getInstance().getUserByUsername(username);
         usnTv.setText(username);
+        pp = (ImageView) header.findViewById(R.id.imageViewProfilePic);
+        setProfilePic(sharedPref.getString(getString(R.string.loggedUser_image), "EMPTY"));
+
         mfirebaseAuth=FirebaseAuth.getInstance();
         final FirebaseUser firebaseUser = mfirebaseAuth.getCurrentUser();
-
+        
         navigationView.getMenu().getItem(3).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -138,6 +163,20 @@ public class MainActivity extends AppCompatActivity {
                 {
                     Toast.makeText(getApplicationContext(), "Could not log out!", Toast.LENGTH_SHORT).show();
                 }
+                return true;
+            }
+        });
+
+        //for dark theme
+        navigationView.getMenu().getItem(2).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener()
+        {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if(item.getTitle().toString().compareTo("Dark mode")==0)
+                    item.setTitle("Light mode");
+                else
+                    item.setTitle("Light mode");
+                //changeMode();
                 return true;
             }
         });
@@ -174,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
 
                 popup.show(); //showing popup menu
             }
-        }); //closing the setOnClickListener method
+        });
 
         searchView=findViewById(R.id.search_titles);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
@@ -198,6 +237,27 @@ public class MainActivity extends AppCompatActivity {
 
 
         });
+
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (1234) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("Userdata", Context.MODE_PRIVATE);
+                    setProfilePic(sharedPref.getString(getString(R.string.loggedUser_image), "EMPTY"));
+                    username=sharedPref.getString(getString(R.string.loggedUser_username),"EMPTY");
+                    usnTv.setText(username);
+                    String email=sharedPref.getString(getString(R.string.loggedUser_email),"EMPTY");
+                    UserData.getInstance().updateUserProfile(email,
+                            username,sharedPref.getString(getString(R.string.loggedUser_image), "EMPTY"));
+                }
+                break;
+            }
+        }
     }
 
     @Override
@@ -209,32 +269,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        MenuItem item=menu.findItem(R.id.action_settings);
+        item.setVisible(false);
+        super.onPrepareOptionsMenu(menu);
+        return true;
+    }
+    @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
 
-    public void changeMode(View view){
-
-        if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO)
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        else
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-    }
-
-    private void fillDatabase()
+    private void setProfilePic(String profilePhotoUri)
     {
-       Title newTitle = new Title();
-       newTitle.name = "NOVIII";
-       newTitle.synopsis = "objectType";
-       newTitle.image = "";
-       newTitle.year=1997;
-
-       TitleData.getInstance().AddTitle(newTitle);
-
-       newTitle=new Title("");
-       TitleData.getInstance().AddTitle(newTitle);
-
+        if (profilePhotoUri != null && !profilePhotoUri.equals("")) {
+            Glide.with(this).load(profilePhotoUri).into(pp);
+        } else {
+            pp.setImageResource(R.drawable.ic_user_24);
+        }
     }
+
 }

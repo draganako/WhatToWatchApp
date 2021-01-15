@@ -1,6 +1,8 @@
 package com.example.proba.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +14,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.example.proba.CommentsActivity;
 import com.example.proba.R;
+import com.example.proba.TitleAboutActivity;
 import com.example.proba.datamodels.Title;
 import com.example.proba.datamodels.User;
 import com.example.proba.datamodels.UserData;
@@ -27,6 +32,7 @@ public class TitleAdapter extends RecyclerView.Adapter<TitleAdapter.ViewHolder>
     private List<Title> fullTitleList;
     ItemFilter itemFilter;
     private Context context;
+    private SharedPreferences sharedPreferences;
 
     public TitleAdapter(List<Title> tl, Context c)
     {
@@ -46,7 +52,25 @@ public class TitleAdapter extends RecyclerView.Adapter<TitleAdapter.ViewHolder>
     public void onBindViewHolder(ViewHolder holder, int position) {
         Title title=titleList.get(position);
         holder.titleName.setText(title.name);
-        //holder.titleImage...(title.image);
+        holder.viewTitleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, TitleAboutActivity.class);
+                intent.putExtra("titleName",title.name);
+                sharedPreferences = context.getSharedPreferences( "Titledata", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("titleName", title.name);
+                editor.commit();
+                context.startActivity(intent);
+            }
+        });
+
+        if (title.image != null && !title.image.equals("")) {
+            Glide.with(context).load(title.image).into(holder.titleImage);
+        } else {
+            holder.titleImage.setImageResource(R.drawable.ic_user_24);
+        }
+
     }
 
     @Override
@@ -58,7 +82,7 @@ public class TitleAdapter extends RecyclerView.Adapter<TitleAdapter.ViewHolder>
     {
         public ImageView titleImage;
         public TextView titleName;
-        ItemFilter itemFilter;
+        private ItemFilter itemFilter;
         public Button viewTitleButton;
         private Context context;
 
@@ -71,6 +95,7 @@ public class TitleAdapter extends RecyclerView.Adapter<TitleAdapter.ViewHolder>
             super(itemView);
             titleImage=(ImageView)itemView.findViewById(R.id.imageViewTitlePhoto);
             titleName= (TextView)itemView.findViewById(R.id.titleViewName);
+            viewTitleButton=(Button)itemView.findViewById(R.id.buttonViewViewTitle);
         }
     }
 
