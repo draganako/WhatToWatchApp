@@ -22,6 +22,7 @@ public class CommentsActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_comments);
 
+        getSupportActionBar().setTitle("");
         TextView title=findViewById(R.id.textViewTitleName);
         title.setText(getIntent().getStringExtra("titleName"));
     }

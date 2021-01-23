@@ -43,7 +43,7 @@ public class FavoritiFragment extends Fragment {
 
         sharedPref = getActivity().getSharedPreferences( "Userdata", Context.MODE_PRIVATE);
         String email = sharedPref.getString(getString(R.string.loggedUser_email), "EMPTY");
-        FavoriteTitleData.getInstance().AddFavoriteTitle(new FavoriteTitle("proba@gmail.com"));
+        //FavoriteTitleData.getInstance().AddFavoriteTitle(new FavoriteTitle("proba@gmail.com"));
         //FavoriteTitleData.getInstance().AddFavoriteTitle(new FavoriteTitle());
         titleListFavs=FavoriteTitleData.getInstance().GetUserFavorites(email);
         adapter=new TitleAdapter(titleListFavs,view.getContext());

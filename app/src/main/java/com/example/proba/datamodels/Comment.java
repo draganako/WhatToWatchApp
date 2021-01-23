@@ -15,13 +15,6 @@ public class Comment
     @Exclude
     public String key;
 
-    public Comment()
-    {
-        author="draganaa";
-        text="tebdjgnpakkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkee";
-        titleName="Serijica";
-    }
-
     public Comment(String user, String textt, String titleNamee)
     {
         author=user;

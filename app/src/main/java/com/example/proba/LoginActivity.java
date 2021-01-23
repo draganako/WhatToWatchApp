@@ -17,6 +17,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.proba.datamodels.Title;
+import com.example.proba.datamodels.TitleData;
 import com.example.proba.datamodels.User;
 import com.example.proba.datamodels.UserData;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,14 +26,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
-    private FirebaseFirestore firestore;
     private UserData userData;
     private TextInputLayout txtPassword;
     private TextInputLayout txtEmail;
@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginB;
     private ProgressDialog progress;
     private SharedPreferences sharedPref;
-
+    private TitleData titleData;//
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +52,9 @@ public class LoginActivity extends AppCompatActivity {
                 break;
         }
         setContentView(R.layout.activity_login);
+        getSupportActionBar().setTitle("");
 
         firebaseAuth = FirebaseAuth.getInstance();
-        firestore = FirebaseFirestore.getInstance();
         userData.getInstance().getUsers();
 
         progress = new ProgressDialog(this);

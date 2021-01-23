@@ -56,9 +56,9 @@ public class CommentsFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.rv_comments);
         recyclerView.setHasFixedSize(true);
 
-       // CommentData.getInstance().AddComment(new Comment());
         sharedPreferences=getContext().getSharedPreferences( "Titledata", Context.MODE_PRIVATE);
         String titleName=sharedPreferences.getString(getString(R.string.title_name), "EMPTY");
+        CommentData.getInstance().getComments();
         commentList= CommentData.getInstance().getComments(titleName);
 
         adapter=new CommentAdapter(commentList,view.getContext());

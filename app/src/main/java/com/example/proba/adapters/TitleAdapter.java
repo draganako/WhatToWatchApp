@@ -82,14 +82,7 @@ public class TitleAdapter extends RecyclerView.Adapter<TitleAdapter.ViewHolder>
     {
         public ImageView titleImage;
         public TextView titleName;
-        private ItemFilter itemFilter;
         public Button viewTitleButton;
-        private Context context;
-
-        private String currentId;//ours
-        private FirebaseFirestore mFirestore;
-        UserData userData;
-        User current;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -180,7 +173,6 @@ public class TitleAdapter extends RecyclerView.Adapter<TitleAdapter.ViewHolder>
                     }
 
                 }
-
             }
 
             results.values = nlist;

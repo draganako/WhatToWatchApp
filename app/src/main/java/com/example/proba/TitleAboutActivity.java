@@ -2,6 +2,7 @@ package com.example.proba;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -52,7 +53,7 @@ public class TitleAboutActivity extends AppCompatActivity {
                 break;
         }
         setContentView(R.layout.activity_title_about);
-
+        getSupportActionBar().setTitle("");
         sharedPreferences=getApplicationContext().getSharedPreferences( "Userdata", Context.MODE_PRIVATE);
         username = sharedPreferences.getString(getString(R.string.loggedUser_username), "EMPTY");
         email=sharedPreferences.getString(getString(R.string.loggedUser_email), "EMPTY");
@@ -83,7 +84,7 @@ public class TitleAboutActivity extends AppCompatActivity {
         synopsisTextView.setText("Synopsis: "+currentTitle.synopsis);
 
         actorstextView=findViewById(R.id.textViewTitleActors);
-        actorstextView.setText("Actors: "+currentTitle.actors);
+        actorstextView.setText("Cast: "+currentTitle.actors);
 
         newComment=findViewById(R.id.buttonLeave);
         newComment.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +92,7 @@ public class TitleAboutActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final EditText input = new EditText(TitleAboutActivity.this);
                 AlertDialog.Builder builder = new AlertDialog.Builder(TitleAboutActivity.this);
-                builder.setTitle("Add a comment")
+                builder.setTitle("Leave a comment")
                         .setView(input)
                         .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                             @Override
@@ -100,6 +101,7 @@ public class TitleAboutActivity extends AppCompatActivity {
                                 {
                                     String commText = String.valueOf(input.getText());
                                     CommentData.getInstance().AddComment(new Comment(username,commText,getIntent().getStringExtra("titleName")));
+                                    CommentData.getInstance().AddComment(new Comment("Marko88", "This is great","The Queen's Gambit"));
                                     Toast.makeText(getApplicationContext(), "Comment added", Toast.LENGTH_SHORT).show();
                                 }
                             }

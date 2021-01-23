@@ -11,7 +11,7 @@ public class FavoriteTitle {
     public FavoriteTitle()
     {
         email="proba@gmail.com";
-        userFavTitle=new Title("");
+        userFavTitle=new Title();
     }
 
     public FavoriteTitle(String email)

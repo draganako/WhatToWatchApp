@@ -25,7 +25,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -42,7 +41,6 @@ public class SignupActivity extends AppCompatActivity
 
     private ProgressDialog progress;
     private FirebaseAuth firebaseAuth;
-    private FirebaseFirestore firestore;
     //private FirebaseStorage.getInstance().get.. --za slike
     private boolean successfull = false;
 
@@ -59,10 +57,9 @@ public class SignupActivity extends AppCompatActivity
                 break;
         }
         setContentView(R.layout.activity_signup);
-
+        getSupportActionBar().setTitle("");
         userData.getInstance().getUsers();
         firebaseAuth = FirebaseAuth.getInstance();
-        firestore=FirebaseFirestore.getInstance();
 
         progress = new ProgressDialog(this);
 

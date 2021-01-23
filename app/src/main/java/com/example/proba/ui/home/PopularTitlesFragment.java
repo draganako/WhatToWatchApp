@@ -61,7 +61,7 @@ public class PopularTitlesFragment extends Fragment {
         Title newTitle = new Title();
         TitleData.getInstance().AddTitle(newTitle);
 
-        newTitle=new Title("");
+        newTitle=new Title();
         TitleData.getInstance().AddTitle(newTitle);
 
     }

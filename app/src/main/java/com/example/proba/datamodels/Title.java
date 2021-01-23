@@ -22,13 +22,13 @@ public class Title implements Serializable {
         year=1984;
         isAMovie=true;
     }
-    public Title(String t)
+    public Title(String image,String name,String synopsis, String actors, int year,boolean isAMovie)
     {
-        image="shs";
-        name="add";
-        synopsis="Ovo je film";
-        actors="Clod, Anna, Mark, Diana";
-        year=1980;
-        isAMovie=false;
+        this.image=image;
+        this.name=name;
+        this.synopsis=synopsis;
+        this.actors=actors;
+        this.year=year;
+        this.isAMovie=isAMovie;
     }
 }

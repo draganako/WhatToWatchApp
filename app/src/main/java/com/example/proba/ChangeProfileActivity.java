@@ -80,6 +80,7 @@ public class ChangeProfileActivity extends AppCompatActivity {
                 break;
         }
         setContentView(R.layout.activity_change_profile);
+        getSupportActionBar().setTitle("");
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -104,14 +105,7 @@ public class ChangeProfileActivity extends AppCompatActivity {
             }
         });
 
-        Button btnDone2 = findViewById(R.id.buttonChangePic2);
-        btnDone2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uploadImage("imagesTitles/");
-            }
-        });
-
+        
         imageViewChangePicture = findViewById(R.id.imageViewChangePic);
         String profilePhotoUri=getIntent().getStringExtra("picture");
         if ( profilePhotoUri!= null && !profilePhotoUri.equals("")) {
@@ -125,8 +119,8 @@ public class ChangeProfileActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(ChangeProfileActivity.this);
                 builder.setTitle("Choose input method");
 
-                String[] animals = {"Camera", "Gallery"};
-                builder.setItems(animals, new DialogInterface.OnClickListener() {
+                String[] opts = {"Camera", "Gallery"};
+                builder.setItems(opts, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(which==0)
@@ -181,7 +175,7 @@ public class ChangeProfileActivity extends AppCompatActivity {
                                             }
                                             else
                                             {
-                                                TitleData.getInstance().updateTitle("add",firestorageUri);
+                                                TitleData.getInstance().updateTitle("Titanic",firestorageUri);
                                             }
 
                                         }

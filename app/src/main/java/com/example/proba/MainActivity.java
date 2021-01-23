@@ -126,16 +126,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        TitleData.getInstance().getTitles();
         sharedPref = getApplicationContext().getSharedPreferences( "Userdata", Context.MODE_PRIVATE);
         username = sharedPref.getString(getString(R.string.loggedUser_username), "EMPTY");
         User user = UserData.getInstance().getUserByUsername(username);
         usnTv.setText(username);
         pp = (ImageView) header.findViewById(R.id.imageViewProfilePic);
         setProfilePic(sharedPref.getString(getString(R.string.loggedUser_image), "EMPTY"));
-
         mfirebaseAuth=FirebaseAuth.getInstance();
         final FirebaseUser firebaseUser = mfirebaseAuth.getCurrentUser();
-        
         navigationView.getMenu().getItem(3).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
